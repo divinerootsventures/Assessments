@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BharatStrengths 34 — Discover Your Natural Talents</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --surface2: #F4F3EE;
+    --border: rgba(0,0,0,0.1);
+    --text: #1A1A14;
+    --text2: #5A5A4A;
+    --text3: #9A9A8A;
+    --accent: #C4501A;
+    --accent-light: #FDF1EB;
+    --accent2: #1D6B52;
+    --accent2-light: #EAF4EF;
+    --gold: #B07D2A;
+    --gold-light: #FBF5E6;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── LANDING ── */
+  #landing {
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    background: linear-gradient(160deg, #FDF1EB 0%, #FAFAF7 50%, #EAF4EF 100%);
+  }
+  .landing-inner { max-width: 560px; width: 100%; text-align: center; }
+  .badge {
+    display: inline-block;
+    background: var(--gold-light);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(176,125,42,0.2);
+    margin-bottom: 24px;
+  }
+  .landing-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 7vw, 56px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .landing-title span { color: var(--accent); font-style: italic; }
+  .landing-sub {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 420px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+  .meta-item { text-align: center; }
+  .meta-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+    display: block;
+  }
+  .meta-label { font-size: 12px; color: var(--text3); }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: #A84215; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(196,80,26,0.3); }
+  .landing-note { font-size: 12px; color: var(--text3); margin-top: 16px; }
+
+  /* ── QUIZ ── */
+  #quiz { background: var(--bg); }
+
+  .quiz-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .quiz-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .progress-wrap { flex: 1; }
+  .progress-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .quiz-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+  .question-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    max-width: 680px;
+    width: 100%;
+  }
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .q-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .q-timer {
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .q-instruction {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-instruction strong { color: var(--text2); }
+
+  .pair-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .pair-option {
+    background: var(--surface2);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+  }
+  .pair-option:hover { border-color: var(--accent); background: var(--accent-light); }
+  .pair-option.selected { border-color: var(--accent); background: var(--accent-light); }
+  .pair-option.selected-b { border-color: var(--accent2); background: var(--accent2-light); }
+  .pair-option p { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .pair-option .opt-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .pair-divider {
+    text-align: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  .scale-section { margin-bottom: 28px; }
+  .scale-label {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .scale-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .scale-extreme {
+    font-size: 11px;
+    color: var(--text3);
+    white-space: nowrap;
+    width: 60px;
+  }
+  .scale-extreme.right { text-align: right; }
+  .scale-dots {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+  }
+  .scale-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scale-dot:hover { border-color: var(--accent); color: var(--accent); }
+  .scale-dot.selected { background: var(--accent); border-color: var(--accent); color: white; }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text2);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--text2); }
+  .btn-next {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .btn-next.enabled { opacity: 1; pointer-events: all; }
+  .btn-next.enabled:hover { background: #A84215; }
+
+  /* ── LOADING ── */
+  #loading {
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .loading-inner { text-align: center; max-width: 400px; padding: 24px; }
+  .loading-ring {
+    width: 64px;
+    height: 64px;
+    border: 3px solid var(--surface2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 24px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .loading-sub { font-size: 14px; color: var(--text3); }
+  .loading-steps { margin-top: 24px; text-align: left; }
+  .loading-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 13px;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+  }
+  .loading-step.done { color: var(--accent2); }
+  .loading-step.done::before { content: '✓'; font-weight: 700; color: var(--accent2); }
+  .loading-step.active::before { content: '→'; font-weight: 700; color: var(--accent); color: var(--text2); }
+  .loading-step.pending::before { content: '○'; color: var(--text3); }
+
+  /* ── RESULTS ── */
+  #results { background: var(--bg); }
+
+  .results-hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .results-hero-inner { max-width: 640px; margin: 0 auto; }
+  .results-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .results-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .results-tagline { font-size: 15px; color: var(--text2); margin-bottom: 24px; }
+
+  .top5-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .top5-badge {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1.5px solid rgba(196,80,26,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .results-body { max-width: 760px; margin: 0 auto; padding: 40px 24px; }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .section-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+
+  .strength-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .strength-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+  }
+  .strength-rank {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--text3);
+    min-width: 32px;
+  }
+  .strength-rank.top { color: var(--accent); }
+  .strength-info { flex: 1; }
+  .strength-name {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  .strength-domain {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .domain-executing { background: var(--accent-light); color: var(--accent); }
+  .domain-influencing { background: #FBF5E6; color: var(--gold); }
+  .domain-relationship { background: var(--accent2-light); color: var(--accent2); }
+  .domain-thinking { background: #EEF2FB; color: #2B4DB8; }
+
+  .strength-score-bar {
+    width: 120px;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .strength-score-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+  .strength-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .strength-body.open { display: block; }
+  .strength-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin: 16px 0;
+  }
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .insight-box {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .insight-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+  .insight-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .profile-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .profile-box h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+  .profile-box p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .action-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text2);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .chart-wrap { padding: 8px 0 24px; }
+  .chart-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .chart-name { font-size: 12px; color: var(--text2); width: 140px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chart-bar-bg { flex: 1; height: 20px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .chart-bar-fill { height: 100%; border-radius: 4px; transition: width 1.2s ease; }
+  .chart-val { font-size: 11px; color: var(--text3); width: 28px; text-align: right; }
+
+  @media (max-width: 560px) {
+    .pair-container { grid-template-columns: 1fr; }
+    .pair-divider { display: none; }
+    .question-card { padding: 24px 20px; }
+    .insight-grid { grid-template-columns: 1fr; }
+    .profile-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ LANDING ════════════════════════════════ -->
+<div id="landing" class="screen active">
+  <div class="landing-inner">
+    <span class="badge">BharatStrengths 34 · Free Assessment</span>
+    <h1 class="landing-title">What are your <span>natural strengths?</span></h1>
+    <p class="landing-sub">A 34-theme strengths assessment built for the Indian professional context. Discover how you think, work, and lead — in the language of your real experiences.</p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-num">178</span>
+        <span class="meta-label">Questions</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-num">34</span>
+        <span class="meta-label">Themes</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-num">~20</span>
+        <span class="meta-label">Minutes</span>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">Begin the assessment →</button>
+    <p class="landing-note">No login required · Results generated instantly · Share with anyone</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ QUIZ ════════════════════════════════ -->
+<div id="quiz" class="screen">
+  <header class="quiz-header">
+    <div class="quiz-logo">BharatStrengths</div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="prog-label">Question 1 of 178</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </header>
+
+  <div class="quiz-body">
+    <div class="question-card" id="qcard">
+      <!-- Rendered dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ LOADING ════════════════════════════════ -->
+<div id="loading" class="screen">
+  <div class="loading-inner">
+    <div class="loading-ring"></div>
+    <h2 class="loading-title">Analysing your strengths</h2>
+    <p class="loading-sub">Cross-referencing 34 talent themes…</p>
+    <div class="loading-steps" id="loading-steps">
+      <div class="loading-step active">Scoring response patterns</div>
+      <div class="loading-step pending">Mapping talent clusters</div>
+      <div class="loading-step pending">Generating strength profile</div>
+      <div class="loading-step pending">Preparing your report</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ RESULTS ════════════════════════════════ -->
+<div id="results" class="screen">
+  <div class="results-hero">
+    <div class="results-hero-inner">
+      <p class="results-eyebrow">Your BharatStrengths Profile</p>
+      <h1 class="results-name" id="res-headline">—</h1>
+      <p class="results-tagline" id="res-tagline">—</p>
+      <div class="top5-row" id="top5-row"></div>
+      <p style="font-size:12px;color:var(--text3)">Your top 5 signature themes · Click any strength below to expand</p>
+    </div>
+  </div>
+
+  <div class="results-body">
+    <div style="margin-bottom:48px">
+      <h2 class="section-title">Your talent map</h2>
+      <p class="section-sub">All 34 themes ranked by your natural strength</p>
+      <div class="chart-wrap" id="chart-wrap"></div>
+    </div>
+
+    <div style="margin-bottom:48px">
+      <h2 class="section-title">Your strength profiles</h2>
+      <p class="section-sub">Your top 10 themes, fully expanded</p>
+      <div id="strengths-list"></div>
+    </div>
+
+    <div style="margin-bottom:48px">
+      <h2 class="section-title">Domain balance</h2>
+      <p class="section-sub">How your strengths distribute across the four domains</p>
+      <div class="profile-grid" id="domain-grid"></div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn-outline" onclick="printResults()">Print / Save PDF</button>
+    <button class="btn-outline" onclick="copyLink()">Copy shareable link</button>
+    <button class="btn-primary" onclick="restartQuiz()">Retake assessment</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA: 34 ORIGINAL THEMES (Indian 24-35 professional context)
+// ══════════════════════════════════════════════════════════
+const THEMES = [
+  {
+    id: "achiever", name: "Achiever", domain: "executing",
+    desc: "You carry an inner hunger to accomplish. Each day you set a mental list — deliverables, calls, targets — and feel restless until it is done. For you, productivity is not pressure; it is identity. Whether in a startup sprint, a government tender race, or a family commitment, you are the one who finishes.",
+    at_best: "Drives teams and projects forward with relentless output",
+    blind_spot: "May burn out or undervalue rest and recovery",
+    career_fit: "Operations, entrepreneurship, sales, project management",
+    in_india: "You thrive in festive season rushes, quarter-end targets, and multi-role startup environments"
+  },
+  {
+    id: "activator", name: "Activator", domain: "influencing",
+    desc: "You need action — and you need it now. Planning has a ceiling for you; at some point it must become movement. You energise groups that are stuck in analysis-paralysis, turning talk into first steps. In a culture that sometimes over-rotates on consensus, you break the logjam.",
+    at_best: "Galvanises groups into motion; sees through overthinking",
+    blind_spot: "Can appear impatient or reckless to detail-oriented teammates",
+    career_fit: "Founder, campaign manager, sales head, community organiser",
+    in_india: "Your urgency is an asset in fast-moving D2C launches, IPL-season marketing, and Tier 2 expansion pushes"
+  },
+  {
+    id: "adaptability", name: "Adaptability", domain: "relationship",
+    desc: "You live in the present and bend with it naturally. Broken plans, last-minute changes, power cuts, shifting customer requirements — where others panic, you recalibrate. You are the colleague who keeps morale steady when the roadmap shifts.",
+    at_best: "Keeps teams calm and functional through disruption",
+    blind_spot: "Long-range planning and proactive preparation can feel unnatural",
+    career_fit: "Operations, field sales, journalism, hospitality, startup generalist",
+    in_india: "You are built for the organised chaos of Indian infrastructure, JUGAAD situations, and fluid startup pivots"
+  },
+  {
+    id: "analytical", name: "Analytical", domain: "thinking",
+    desc: "You are instinctively sceptical of assertions without evidence. You need the data, the model, the assumptions clearly stated. You poke holes in optimistic projections and build credibility by being the one who catches what others miss. In a landscape of hype, you ground decisions in reality.",
+    at_best: "Builds rigorous business cases and prevents expensive mistakes",
+    blind_spot: "Can delay decisions while seeking perfect data",
+    career_fit: "Finance, research, policy, product analytics, supply chain",
+    in_india: "Your instinct to question saves teams from overcommitting in boom cycles — GST filing errors, inventory misprojections, vendor fraud"
+  },
+  {
+    id: "arranger", name: "Arranger", domain: "executing",
+    desc: "You are a dynamic conductor — constantly optimising how people, tasks and resources fit together. When variables shift, you don't freeze; you reshuffle. You intuitively sense who should be doing what and how the pieces can be rearranged for maximum efficiency.",
+    at_best: "Thrives in complex multi-stakeholder projects and chaotic scale-ups",
+    blind_spot: "Constant restructuring can unsettle team members who crave stability",
+    career_fit: "COO, event management, supply chain, HR, project coordinator",
+    in_india: "Invaluable during wedding logistics, trade fair booths, multi-city rollouts, and factory shift coordination"
+  },
+  {
+    id: "belief", name: "Belief", domain: "executing",
+    desc: "Your values are your north star. You work hardest when the mission aligns with what you genuinely believe in — family, community, dharma, nation, craft. Roles that conflict with your convictions drain you. But when values and work align, you are unstoppable and deeply loyal.",
+    at_best: "Brings fierce commitment and moral clarity to mission-driven work",
+    blind_spot: "Can be rigid when pragmatism requires bending principles",
+    career_fit: "Social entrepreneurship, education, NGO leadership, family business, government",
+    in_india: "Your conviction is your edge in building community trust, especially in rural or semi-urban markets where relationships outlast transactions"
+  },
+  {
+    id: "command", name: "Command", domain: "influencing",
+    desc: "You take charge. Conflict does not intimidate you — it is simply a problem to be resolved by stating the truth clearly. You present your case with confidence and expect others to engage directly. In a culture where hierarchy sometimes suppresses direct speech, your clarity is radical and valuable.",
+    at_best: "Steps up in crises and clears ambiguity with decisive direction",
+    blind_spot: "May come across as domineering in collaborative or consensus-heavy cultures",
+    career_fit: "CEO, lawyer, crisis manager, negotiator, military officer",
+    in_india: "Essential in high-stakes negotiations — vendor disputes, regulatory standoffs, investor term-sheet pushbacks"
+  },
+  {
+    id: "communication", name: "Communication", domain: "influencing",
+    desc: "You bring ideas to life through words. Abstract concepts become vivid stories; data becomes narrative; dry updates become engaging briefings. You naturally think in examples, anecdotes and metaphors. Whether in a sales call, a board presentation or a WhatsApp broadcast, your communication leaves an impression.",
+    at_best: "Turns complex, dry, or technical content into compelling narratives",
+    blind_spot: "May oversimplify nuance or fill silence with words when listening would serve better",
+    career_fit: "Marketing, PR, content, teaching, sales, politics, podcasting",
+    in_india: "Your talent bridges Hindi-English code-switching, local storytelling formats, and the highly personal communication expected in Indian business relationships"
+  },
+  {
+    id: "competition", name: "Competition", domain: "influencing",
+    desc: "You are energised by comparison. You know your numbers and you know everyone else's. Winning is the benchmark — not against an abstract goal, but against real opponents. You raise your performance when you know the score is being tracked. Leaderboards, rankings and peer comparison fuel you.",
+    at_best: "Drives outsized performance where clear metrics and rivals exist",
+    blind_spot: "May struggle in collaborative environments or when wins are shared and unranked",
+    career_fit: "Sales, trading, sports management, startup founder, investment banking",
+    in_india: "Your fire ignites in JEE/CAT prep culture, IPO races, FMCG market share battles, and competitive district-level government postings"
+  },
+  {
+    id: "connectedness", name: "Connectedness", domain: "relationship",
+    desc: "You sense the invisible threads linking people, events and ideas. Coincidences feel meaningful. You believe all things happen for a reason, and this philosophy makes you patient, philosophical and a calming presence in anxious teams. You hold the larger picture when others are lost in chaos.",
+    at_best: "Unifies diverse teams around shared purpose; brings spiritual calm",
+    blind_spot: "May seem passive or fatalistic to results-oriented colleagues",
+    career_fit: "Counselling, spiritual leadership, community building, philosophy, education",
+    in_india: "Deeply aligned with the Indian philosophical tradition of karma and interconnectedness — a natural bridge between old wisdom and modern organisations"
+  },
+  {
+    id: "consistency", name: "Consistency", domain: "executing",
+    desc: "Fairness is fundamental to you. You believe everyone deserves the same rules, the same treatment, the same access. You create clear processes and apply them without exception. Where others play favourites, you build systems that outlast individuals.",
+    at_best: "Creates trustworthy, scalable systems and earns team-wide respect",
+    blind_spot: "Rigid rule-following can frustrate in contexts that reward discretion and relationships",
+    career_fit: "Operations, compliance, HR, government administration, quality control",
+    in_india: "Your instinct for fairness is powerful in unionised environments, large family businesses, and compliance-heavy regulated industries"
+  },
+  {
+    id: "context", name: "Context", domain: "thinking",
+    desc: "To understand the present, you study the past. You instinctively reach for history — how this company was built, what failed before, what the founder intended. This historical grounding protects you and your team from repeating mistakes and roots your strategy in genuine understanding.",
+    at_best: "Prevents costly repetition of past mistakes; brings institutional memory",
+    blind_spot: "Can be slow to accept that the present has genuinely changed",
+    career_fit: "Strategy, journalism, academia, policy, family business custodian, archivist",
+    in_india: "Invaluable for navigating joint family businesses, generational wealth transitions, and long-cycle industries like textiles, agriculture and banking"
+  },
+  {
+    id: "deliberative", name: "Deliberative", domain: "executing",
+    desc: "You identify risk before it becomes crisis. Where others rush, you slow down and ask: what could go wrong? This is not pessimism; it is protective intelligence. Your careful due diligence on vendors, contracts, and co-founders has saved many teams from catastrophic decisions.",
+    at_best: "Protects organisations from poorly-assessed risks and impulsive commitments",
+    blind_spot: "Can be perceived as overly cautious or unwilling to move fast",
+    career_fit: "Risk, legal, compliance, audit, fund due diligence, government procurement",
+    in_india: "Critical in high-fraud environments — vendor diligence, GST fraud, counterfeit goods supply chains, and shaky term sheets"
+  },
+  {
+    id: "developer", name: "Developer", domain: "relationship",
+    desc: "You see potential in people before they see it themselves. A small breakthrough from a junior colleague lights you up. You are drawn to mentoring, coaching and teaching — not as a duty, but because watching others grow is genuinely satisfying. You build people as others build products.",
+    at_best: "Creates high-retention, high-growth teams through genuine investment in individuals",
+    blind_spot: "May invest in people who are not motivated to grow, leading to frustration",
+    career_fit: "People management, training, coaching, education, HR, social work",
+    in_india: "Your natural guru-shishya instinct aligns with India's deep respect for teachers — powerful in campus recruitment, apprenticeship models, and family business succession"
+  },
+  {
+    id: "discipline", name: "Discipline", domain: "executing",
+    desc: "You thrive with structure. Routines, systems and checklists are not constraints — they are the foundations of your high performance. You create order where there is chaos and hold timelines that others let slip. In unpredictable environments, your predictability is a superpower.",
+    at_best: "Delivers consistent quality through systems; makes teams more reliable",
+    blind_spot: "Disruption of routines causes disproportionate stress",
+    career_fit: "Operations, finance, quality assurance, engineering, daily journalism",
+    in_india: "Your structure is a counter-force to India's high-chaos, relationship-over-process work culture — an asset in ISO certification drives and SOP buildouts"
+  },
+  {
+    id: "empathy", name: "Empathy", domain: "relationship",
+    desc: "You feel what others feel — even when they haven't said it. A colleague's tension, a client's unspoken concern, a co-founder's quiet exhaustion — you notice and respond before it escalates. This makes you exceptional at de-escalation, trust-building, and holding teams together during hard times.",
+    at_best: "Builds deep trust; prevents people problems before they surface",
+    blind_spot: "Absorbing others' emotions can lead to compassion fatigue",
+    career_fit: "HR, counselling, customer success, healthcare, social work, leadership",
+    in_india: "Powerful in the high-context, relationship-first Indian business environment — essential for navigating family business tensions and rural customer trust"
+  },
+  {
+    id: "focus", name: "Focus", domain: "executing",
+    desc: "You set a destination and drive straight to it. Distractions, tangents and shiny new directions barely register for you. You bring clarity to cluttered teams, prioritise ruthlessly, and are the last person standing when others have pivoted away from the hard, important work.",
+    at_best: "Drives long-haul projects to completion despite distractions",
+    blind_spot: "May miss important emergent opportunities by staying locked on the original target",
+    career_fit: "Deep research, product management, finance, specialist roles",
+    in_india: "Your focus is a structural advantage against India's hyperactive startup ecosystem, where distraction and pivoting are culturally normalised"
+  },
+  {
+    id: "futuristic", name: "Futuristic", domain: "thinking",
+    desc: "You are inspired by tomorrow. Vivid images of the future energise you and move others. Whether you are picturing a startup ten years from now, India's infrastructure in 2040, or your community's next generation, you make the future feel real and worth building toward.",
+    at_best: "Inspires and orientates teams around a compelling long-term vision",
+    blind_spot: "May underweight present-day constraints and near-term execution challenges",
+    career_fit: "Entrepreneurship, strategy, urban planning, venture capital, politics",
+    in_india: "Aligned with India's generational ambition arc — building new institutions, escaping inherited limitations, and imagining a different country"
+  },
+  {
+    id: "harmony", name: "Harmony", domain: "relationship",
+    desc: "You seek agreement and avoid unnecessary friction. You look for shared ground, use inclusive language, and quietly steer groups away from destructive conflict. In a culture where relationships are long and grudges are longer, your ability to preserve goodwill is a strategic asset.",
+    at_best: "Maintains critical relationships and prevents destructive conflict",
+    blind_spot: "May avoid necessary confrontations or suppress important dissenting views",
+    career_fit: "Mediation, alliance management, HR, family business, diplomacy, sales",
+    in_india: "Invaluable for navigating joint family businesses, political vendor relationships, and multi-caste community organisations"
+  },
+  {
+    id: "ideation", name: "Ideation", domain: "thinking",
+    desc: "You are fascinated by ideas — especially unexpected connections between unrelated things. A conversation about Bollywood reminds you of a logistics model. You love brainstorming because the volume of ideas itself delights you. Creativity is not your job; it is your natural state.",
+    at_best: "Generates novel solutions and cross-domain innovations",
+    blind_spot: "May generate more ideas than can realistically be executed",
+    career_fit: "Product design, creative direction, entrepreneurship, marketing, R&D",
+    in_india: "Your cross-pollination thinking is perfectly suited for the Indian JUGAAD tradition and the emerging startup-to-mass-market problem space"
+  },
+  {
+    id: "includer", name: "Includer", domain: "relationship",
+    desc: "You notice who is left out — and you do something about it. Whether it is the quiet colleague in the meeting, the first-generation team member in a room full of IIT alumni, or the rural customer your product has overlooked, you expand the circle. You believe everyone belongs.",
+    at_best: "Builds diverse, loyal teams and catches market gaps others overlook",
+    blind_spot: "May extend inclusion at the cost of quality or difficult-but-necessary exclusions",
+    career_fit: "D&I, education, social enterprise, public policy, community management",
+    in_india: "Powerful in caste/class-diverse team environments and in building products for Bharat's underserved majority"
+  },
+  {
+    id: "individualization", name: "Individualization", domain: "relationship",
+    desc: "You resist one-size-fits-all. You notice that each person is a distinct universe of motivations, quirks and strengths — and you adapt accordingly. You are the manager who gives different things to different people, not out of inconsistency, but deep perception.",
+    at_best: "Unlocks team members' best work by meeting them where they are",
+    blind_spot: "Highly personalised management can feel like favouritism to those who prefer consistency",
+    career_fit: "People management, coaching, teaching, sales, customer experience",
+    in_india: "Your sensitivity to individuals navigates India's complex social hierarchies and helps bridge generational gaps in family businesses"
+  },
+  {
+    id: "input", name: "Input", domain: "thinking",
+    desc: "You collect — information, contacts, references, tools, insights. Your saved articles are legendary. Your mental Rolodex is always growing. You are the person teams call when they need a reference, an expert, a dataset, or a historical precedent. Your breadth makes you an invaluable resource.",
+    at_best: "Serves as a living knowledge base; accelerates team research and connections",
+    blind_spot: "Hoarding information without sufficient synthesis or action",
+    career_fit: "Research, journalism, consulting, investor, librarian, intelligence",
+    in_india: "Your network-and-knowledge accumulation is amplified by India's relationship economy — knowing the right person often matters more than any formal credential"
+  },
+  {
+    id: "intellection", name: "Intellection", domain: "thinking",
+    desc: "You need time to think — deeply, quietly, alone. You introspect, philosophise, and wrestle with complex ideas before you speak or decide. This reflective quality gives your contributions unusual depth. You are not slow; you are thorough, and the quality of your thinking shows it.",
+    at_best: "Produces unusually considered, high-quality thinking and writing",
+    blind_spot: "Can appear withdrawn or indecisive; struggles in fast, reactive cultures",
+    career_fit: "Writing, strategy, academic research, policy, philosophy, product vision",
+    in_india: "Your depth aligns with India's tradition of considered thought, mentorship culture, and the long-horizon strategy required for institutional building"
+  },
+  {
+    id: "learner", name: "Learner", domain: "thinking",
+    desc: "The journey from ignorance to competence thrills you. You are not simply collecting certificates — you are genuinely energised by the process of becoming skilled at something new. In a world of accelerating change, your love of learning is a permanent competitive advantage.",
+    at_best: "Stays current, adapts to new domains, and continuously upgrades team capability",
+    blind_spot: "Can get addicted to learning and delay doing",
+    career_fit: "Consulting, product management, research, teaching, entrepreneurship",
+    in_india: "Powerful in India's MOOC boom, upskilling culture, and the aspirational mindset of first-generation professionals breaking into new industries"
+  },
+  {
+    id: "maximizer", name: "Maximizer", domain: "influencing",
+    desc: "Excellence is your standard, not adequacy. You are more excited about taking a good thing to great than fixing something broken. You have a sharp eye for strength — in yourself, in others, in a business model — and you persistently push it to its ceiling.",
+    at_best: "Elevates quality, brand, and performance from good to exceptional",
+    blind_spot: "May frustrate teams with perfectionism or underinvest in necessary remedial work",
+    career_fit: "Brand building, luxury, product quality, coaching, elite performance",
+    in_india: "Your instinct for premium quality is timely as India's consumer economy moves from price-sensitive to quality-seeking across Tier 1 and 2 cities"
+  },
+  {
+    id: "positivity", name: "Positivity", domain: "relationship",
+    desc: "Your enthusiasm is contagious. You see what is possible, celebrate small wins, and keep morale alive when conditions are harsh. In a culture that sometimes defaults to complaint or cynicism, your genuine optimism is a leadership asset that builds loyalty and energy.",
+    at_best: "Sustains team morale through setbacks; attracts collaboration and goodwill",
+    blind_spot: "May underweight real risks or create pressure on others to suppress negative feedback",
+    career_fit: "Sales, customer experience, community management, education, healthcare",
+    in_india: "Your energy fuels the aspirational optimism central to India's growth story — essential in early-stage teams where the environment is hard but the vision must remain alive"
+  },
+  {
+    id: "relator", name: "Relator", domain: "relationship",
+    desc: "You prefer a few deep friendships to many surface connections. You invest in knowing people — their families, their struggles, their dreams — and this depth of relationship creates extraordinary trust and loyalty. You don't network; you bond.",
+    at_best: "Builds the deep personal trust that drives long-term business relationships",
+    blind_spot: "Can be slow to extend trust to outsiders or new team members",
+    career_fit: "Key account management, partnership, family business, mentoring, leadership",
+    in_india: "Your relational depth maps perfectly to India's high-context business culture, where a decade-long relationship beats any contract"
+  },
+  {
+    id: "responsibility", name: "Responsibility", domain: "executing",
+    desc: "When you say you will do something, it gets done. Your word is a contract with yourself, not just others. This psychological ownership — this refusal to cut corners or make excuses — builds your reputation quietly over years. People come to you with their most important problems.",
+    at_best: "Builds irreplaceable trust; the person others default to for critical work",
+    blind_spot: "Takes on too much rather than delegate, leading to bottlenecks and burnout",
+    career_fit: "Operations, finance, custodian roles, leadership, audit, project delivery",
+    in_india: "Your ownership culture runs counter to India's sometimes diffuse accountability systems — making you the rock that organisations and families quietly build around"
+  },
+  {
+    id: "restorative", name: "Restorative", domain: "executing",
+    desc: "You are energised by problems. Broken systems, failing products, struggling teams — you want to diagnose and fix them. You have a particular talent for getting to the root cause, and you're satisfied by the tangible act of making something work again.",
+    at_best: "Turns around failing operations, teams and products others have given up on",
+    blind_spot: "Drawn to problems, may neglect proactive building in favour of constant fixing",
+    career_fit: "Operations turnaround, product debugging, HR remediation, consulting",
+    in_india: "Powerful in India's infrastructure gaps — operational breakdowns in supply chains, legacy IT systems, and family businesses needing professionalisation"
+  },
+  {
+    id: "selfassurance", name: "Self-Assurance", domain: "influencing",
+    desc: "You have an inner compass you trust absolutely. External validation matters little; what matters is your own assessment. This confidence allows you to make decisions with incomplete information, hold unpopular positions, and persist when others waver. You are your own north star.",
+    at_best: "Makes bold decisions under uncertainty; holds conviction in adversarial environments",
+    blind_spot: "Can resist feedback and become blind to legitimate critique",
+    career_fit: "Entrepreneurship, trading, investing, sport, leadership, creative direction",
+    in_india: "Your groundedness is an asset in a conformist social environment where being your own person often requires active resistance to family and peer pressure"
+  },
+  {
+    id: "significance", name: "Significance", domain: "influencing",
+    desc: "You want your work to matter — to be recognised, to leave a mark, to be known for something real. This is not vanity; it is a drive for meaningful impact. You work hardest when your contribution is visible, valued, and connected to something larger.",
+    at_best: "Driven to produce work of lasting, visible impact; raises team ambition",
+    blind_spot: "Hunger for recognition can be misread as ego or create competition with peers",
+    career_fit: "Entrepreneurship, public leadership, media, creative industries, politics",
+    in_india: "Your need to matter connects deeply with the aspirational first-generation professional narrative — building something real that your family and community can point to with pride"
+  },
+  {
+    id: "strategic", name: "Strategic", domain: "thinking",
+    desc: "You sort through the noise, spot the patterns, and identify the paths forward — especially the ones others miss. When others see a tangle, you see options. You intuitively ask 'what if' and pressure-test plans before committing. Your value is not in working harder; it is in choosing better.",
+    at_best: "Identifies non-obvious paths and prevents teams from going down costly dead-ends",
+    blind_spot: "May be misunderstood as dismissive when quickly seeing why an idea won't work",
+    career_fit: "Strategy, entrepreneurship, consulting, investing, product leadership",
+    in_india: "Your navigational instinct is vital in India's complex regulatory, political, and market terrain — where the official path and the real path are rarely the same"
+  },
+  {
+    id: "woo", name: "Woo", domain: "influencing",
+    desc: "Winning Over Others is your natural skill. Strangers become contacts and contacts become allies within minutes. You enjoy the challenge of meeting new people, breaking the ice, and discovering the common ground. Networking is not a chore; it is sport.",
+    at_best: "Opens doors, builds networks, and converts cold audiences into warm communities",
+    blind_spot: "Depth can suffer when breadth of connection is the primary mode",
+    career_fit: "Sales, business development, politics, event hosting, PR, community building",
+    in_india: "Your charisma is turbocharged in India's relationship-economy, where a well-timed chai conversation at a trade fair closes deals that months of email cannot"
+  }
+];
+
+// Domain colours
+const DOMAIN_COLORS = {
+  executing: 'domain-executing',
+  influencing: 'domain-influencing',
+  relationship: 'domain-relationship',
+  thinking: 'domain-thinking'
+};
+const DOMAIN_LABELS = {
+  executing: 'Executing', influencing: 'Influencing',
+  relationship: 'Relationship Building', thinking: 'Strategic Thinking'
+};
+const DOMAIN_DESCS = {
+  executing: "You make things happen. These strengths help you take an idea and transform it into reality — through persistence, systems, and ownership.",
+  influencing: "You sell, persuade, and take charge. These strengths help you reach wider audiences and ensure your voice is heard.",
+  relationship: "You build the teams and partnerships that make work possible. These strengths help you connect, sense, and invest in people.",
+  thinking: "You provide the intellectual horsepower. These strengths help you absorb information, think it through, and make better decisions."
+};
+
+// ══════════════════════════════════════════════════════════
+// QUESTION BANK — 178 questions, 5-6 per theme
+// Format: { themeId, type: 'pair'|'scale', ...content }
+// ══════════════════════════════════════════════════════════
+function buildQuestions() {
+  const raw = [
+    // ACHIEVER (5 questions)
+    { th:"achiever", t:"pair", a:"By 9 PM I feel satisfied only if I have ticked off most of my day's goals", b:"I feel most satisfied when I have built something meaningful over a long period, even if today was slow" },
+    { th:"achiever", t:"scale", stmt:"Incomplete tasks stay in my mind until they are done, even on weekends and holidays" },
+    { th:"achiever", t:"pair", a:"When a project finishes I immediately start thinking about the next challenge", b:"When a project finishes I take time to rest and celebrate before thinking of what's next" },
+    { th:"achiever", t:"scale", stmt:"I keep a mental or written list of what I want to accomplish each day and feel restless if I fall short" },
+    { th:"achiever", t:"pair", a:"I measure a good day by how productive I was", b:"I measure a good day by the quality of relationships and conversations I had" },
+    // ACTIVATOR (5)
+    { th:"activator", t:"pair", a:"When the team is stuck debating, I prefer to try something and adjust later", b:"When the team is stuck debating, I prefer to keep discussing until we reach the right plan" },
+    { th:"activator", t:"scale", stmt:"Waiting too long to begin something once a decision is made is genuinely frustrating for me" },
+    { th:"activator", t:"pair", a:"I am the person who first volunteers for a new initiative before all the details are clear", b:"I usually wait to see how something unfolds before deciding to commit my energy to it" },
+    { th:"activator", t:"scale", stmt:"I believe that starting imperfectly is far better than not starting until everything is perfect" },
+    { th:"activator", t:"pair", a:"I often push groups out of excessive planning toward action", b:"I often pull groups back from premature action toward deeper preparation" },
+    // ADAPTABILITY (5)
+    { th:"adaptability", t:"pair", a:"When the plan changes suddenly, I adjust naturally and move forward without much frustration", b:"When the plan changes suddenly, I feel unsettled and need time to re-orient before I can move forward" },
+    { th:"adaptability", t:"scale", stmt:"I am comfortable not knowing exactly what my day will look like when I wake up" },
+    { th:"adaptability", t:"pair", a:"I am energised by variety and improvisation in my daily work", b:"I am energised by having clear systems and knowing exactly what to expect each day" },
+    { th:"adaptability", t:"scale", stmt:"Last-minute changes to plans that others find stressful don't usually bother me" },
+    { th:"adaptability", t:"pair", a:"I tend to go with the flow when priorities shift, trusting that things will work out", b:"I prefer to anchor a shifting situation by rebuilding a clear structure as quickly as possible" },
+    // ANALYTICAL (5)
+    { th:"analytical", t:"pair", a:"When someone presents an exciting opportunity, my first instinct is to check the data behind it", b:"When someone presents an exciting opportunity, my first instinct is to explore the possibilities it opens up" },
+    { th:"analytical", t:"scale", stmt:"I often spot gaps or inconsistencies in arguments that others accept without question" },
+    { th:"analytical", t:"pair", a:"I am more likely to slow a team down to verify assumptions than to accept them and move quickly", b:"I am more likely to push a team to move quickly than to slow down and verify every assumption" },
+    { th:"analytical", t:"scale", stmt:"I feel uncomfortable committing to a position before I have examined the evidence carefully" },
+    { th:"analytical", t:"pair", a:"I naturally ask 'how do you know that?' when someone states something as fact", b:"I naturally ask 'where can this take us?' when someone states something as fact" },
+    // ARRANGER (5)
+    { th:"arranger", t:"pair", a:"When a project gets chaotic, I automatically start reorganising who is doing what to optimise output", b:"When a project gets chaotic, I focus on calming the team and maintaining morale before restructuring" },
+    { th:"arranger", t:"scale", stmt:"I enjoy managing multiple moving parts simultaneously and finding the best configuration" },
+    { th:"arranger", t:"pair", a:"I often move people around in a project mid-stream when I see a better way to allocate their talents", b:"Once I have assigned roles I prefer to stick with the structure and let people settle into their positions" },
+    { th:"arranger", t:"scale", stmt:"Complex logistics — coordinating people, resources and timelines — energise me rather than stress me" },
+    { th:"arranger", t:"pair", a:"I intuitively see how changing one element of a plan could unlock better results across the whole system", b:"I prefer to optimise each part of a plan independently rather than reconfigure the whole system at once" },
+    // BELIEF (5)
+    { th:"belief", t:"pair", a:"Working for an organisation whose mission I believe in matters more to me than the compensation package", b:"Working for an organisation with strong financials and career prospects matters more than mission alignment" },
+    { th:"belief", t:"scale", stmt:"My core values are a non-negotiable filter through which I assess opportunities and decisions" },
+    { th:"belief", t:"pair", a:"I have turned down work or opportunities because they conflicted with my values", b:"I generally find ways to reframe work situations so they align well enough with my values" },
+    { th:"belief", t:"scale", stmt:"My sense of purpose is strongly connected to my family, community, or cultural roots" },
+    { th:"belief", t:"pair", a:"I work most passionately when I believe the work genuinely serves something larger than profit", b:"I work most passionately when the challenges are intellectually stimulating and the results are measurable" },
+    // COMMAND (5)
+    { th:"command", t:"pair", a:"When I see a decision needs to be made and no one is stepping up, I naturally take charge", b:"When I see a decision needs to be made and no one is stepping up, I prefer to facilitate agreement rather than dictate direction" },
+    { th:"command", t:"scale", stmt:"I am comfortable saying difficult things directly, even in high-stakes or uncomfortable situations" },
+    { th:"command", t:"pair", a:"I find silence and indirectness in important conversations frustrating — I prefer straight talk", b:"I am skilled at reading between the lines and prefer nuanced, relationship-sensitive communication" },
+    { th:"command", t:"scale", stmt:"Conflict does not unsettle me — I see it as a natural part of working through important problems" },
+    { th:"command", t:"pair", a:"I am more likely to confront a difficult issue head-on than to let it sit and hope it resolves", b:"I am more likely to wait for the right moment and prepare carefully before confronting a difficult issue" },
+    // COMMUNICATION (5)
+    { th:"communication", t:"pair", a:"I naturally reach for a story, analogy or example when explaining an idea", b:"I naturally reach for data, frameworks and structured arguments when explaining an idea" },
+    { th:"communication", t:"scale", stmt:"I enjoy presenting to groups and feel energised rather than drained after public speaking" },
+    { th:"communication", t:"pair", a:"People often tell me I have explained something in a way that made it much clearer or more memorable", b:"People often tell me I have thought about something in a way that revealed a perspective they hadn't considered" },
+    { th:"communication", t:"scale", stmt:"I find it easy to adjust my communication style to match different audiences — from tea stall to boardroom" },
+    { th:"communication", t:"pair", a:"I am energised by telling the story of my work as much as by doing the work itself", b:"I am primarily energised by the craft and execution of the work; communicating it is secondary" },
+    // COMPETITION (5)
+    { th:"competition", t:"pair", a:"I work harder when I know how my performance compares to others around me", b:"I work hardest when competing against my own previous standards, regardless of others" },
+    { th:"competition", t:"scale", stmt:"Knowing where I rank among my peers motivates me significantly" },
+    { th:"competition", t:"pair", a:"Second place genuinely bothers me — I am not satisfied unless I win", b:"I prefer to compete in ways that raise the quality of everyone involved, not just to win" },
+    { th:"competition", t:"scale", stmt:"I track my performance metrics closely and compare them to benchmarks and rivals" },
+    { th:"competition", t:"pair", a:"I am energised by markets, leaderboards and rankings that let me see exactly where I stand", b:"I am energised by the internal challenge of building something nobody else has built yet, regardless of rankings" },
+    // CONNECTEDNESS (5)
+    { th:"connectedness", t:"pair", a:"I often see meaningful patterns or connections between seemingly unrelated events in my life", b:"I am generally sceptical of finding patterns in coincidences and prefer evidence-based explanations" },
+    { th:"connectedness", t:"scale", stmt:"I believe most things happen for a reason, even when that reason is not yet clear" },
+    { th:"connectedness", t:"pair", a:"I find deep satisfaction in the idea that my work connects me to a larger human story", b:"I find deep satisfaction in the tangible impact and measurable results of my work" },
+    { th:"connectedness", t:"scale", stmt:"When conflict arises, I naturally look for the larger shared purpose that can bring opposing sides together" },
+    { th:"connectedness", t:"pair", a:"I am drawn to the philosophical and spiritual dimensions of work and life", b:"I am primarily drawn to the practical and material dimensions of work and life" },
+    // CONSISTENCY (5)
+    { th:"consistency", t:"pair", a:"I prefer to apply the same rules to everyone rather than make exceptions based on individual circumstances", b:"I prefer to apply my judgement individually to each situation rather than following the same rules uniformly" },
+    { th:"consistency", t:"scale", stmt:"Favouritism or inconsistent treatment — even at a small scale — bothers me strongly" },
+    { th:"consistency", t:"pair", a:"I naturally build clear, replicable processes so that outcomes don't depend on who is doing the work", b:"I naturally customise my approach to each situation rather than building uniform processes" },
+    { th:"consistency", t:"scale", stmt:"People around me trust that I will treat them and others the same way, regardless of who is watching" },
+    { th:"consistency", t:"pair", a:"I am uncomfortable when high performers receive special treatment that others do not get", b:"I believe high performers should receive differentiated treatment as a fair reflection of their contribution" },
+    // CONTEXT (5)
+    { th:"context", t:"pair", a:"Before making a big decision, I find it important to understand how we got to the current situation", b:"Before making a big decision, I focus primarily on the current data and future possibilities rather than historical context" },
+    { th:"context", t:"scale", stmt:"Understanding the origin of a problem or organisation helps me navigate it far better" },
+    { th:"context", t:"pair", a:"I often draw on historical precedent to guide current decisions", b:"I prefer to treat each situation as unique and avoid letting historical patterns constrain current thinking" },
+    { th:"context", t:"scale", stmt:"I find it valuable to know the stories of how people built what came before, not just what exists now" },
+    { th:"context", t:"pair", a:"I am often the person on a team who remembers why a past decision was made and what happened as a result", b:"I am often the person on a team who focuses on what is possible next rather than what happened before" },
+    // DELIBERATIVE (5)
+    { th:"deliberative", t:"pair", a:"I spend meaningful time identifying what could go wrong before committing to a plan", b:"I spend most of my energy identifying what could go right and building toward it quickly" },
+    { th:"deliberative", t:"scale", stmt:"I would rather take more time than needed on an important decision than risk a regrettable one" },
+    { th:"deliberative", t:"pair", a:"I am naturally cautious about new relationships — I take time to build trust before opening up", b:"I open up quickly in new relationships and trust tends to grow naturally from there" },
+    { th:"deliberative", t:"scale", stmt:"I carefully evaluate the risks in vendor contracts, partnerships and commitments before agreeing" },
+    { th:"deliberative", t:"pair", a:"I often identify risks that my team has overlooked and raise them before they become crises", b:"I often identify opportunities that my team has overlooked and push for them before they disappear" },
+    // DEVELOPER (5)
+    { th:"developer", t:"pair", a:"Watching someone I have coached make their first real breakthrough brings me deep satisfaction", b:"Personally achieving something difficult and meeting my own high standards brings me deep satisfaction" },
+    { th:"developer", t:"scale", stmt:"I pay close attention to small signs of progress in people around me and point them out" },
+    { th:"developer", t:"pair", a:"I am drawn to mentoring junior colleagues even when it takes significant time away from my own output", b:"I prefer to invest time in my own skill development rather than coaching others, unless it is formally my role" },
+    { th:"developer", t:"scale", stmt:"I find myself looking for the latent potential in people that they have not yet recognised in themselves" },
+    { th:"developer", t:"pair", a:"I often give junior team members stretch assignments that will develop them, even at short-term cost to delivery", b:"I assign work based primarily on who is best equipped to deliver it right now, not on development goals" },
+    // DISCIPLINE (5)
+    { th:"discipline", t:"pair", a:"I like having a clear daily routine and feel off when it is disrupted without good reason", b:"I prefer flexible days that respond to what emerges and don't need a fixed schedule to perform well" },
+    { th:"discipline", t:"scale", stmt:"I build systems and checklists to ensure important things never fall through the cracks" },
+    { th:"discipline", t:"pair", a:"I am uncomfortable in work environments that are chaotic, unplanned or poorly structured", b:"I am energised by flexible environments and find excessive structure stifling" },
+    { th:"discipline", t:"scale", stmt:"I tend to arrive early, meet deadlines consistently, and find late or disorganised people frustrating" },
+    { th:"discipline", t:"pair", a:"I create order naturally — in my workspace, my calendar, my files and my communication", b:"I operate productively in what others might see as disorder — my own system is invisible to others but works for me" },
+    // EMPATHY (5)
+    { th:"empathy", t:"pair", a:"I often sense what a person is feeling before they have said anything, based on their tone or body language", b:"I tend to focus on what people say explicitly rather than what they might be feeling underneath" },
+    { th:"empathy", t:"scale", stmt:"When someone around me is upset or stressed, I feel it too and find it hard to focus on my own work" },
+    { th:"empathy", t:"pair", a:"I adjust how I deliver difficult news based on my read of how the person is feeling in that moment", b:"I deliver difficult news the same way regardless of my audience because clarity and consistency matter most" },
+    { th:"empathy", t:"scale", stmt:"People often come to me with their problems because they feel I genuinely understand them, not just listen to them" },
+    { th:"empathy", t:"pair", a:"During tense group situations I am usually the person tracking the emotional temperature of the room", b:"During tense group situations I am usually the person tracking the logic and ensuring the key points are heard" },
+    // FOCUS (5)
+    { th:"focus", t:"pair", a:"Once I decide what I am going to work on, distractions barely register — I get deeply into the work", b:"I move between different tasks and conversations easily and find single-minded focus difficult to sustain for long" },
+    { th:"focus", t:"scale", stmt:"I prioritise ruthlessly — I am comfortable saying no to things that don't move my central objective forward" },
+    { th:"focus", t:"pair", a:"I keep teams and projects on track by continuously filtering out what doesn't matter", b:"I keep teams and projects alive by continuously surfacing new opportunities and connections" },
+    { th:"focus", t:"scale", stmt:"I can work on a single problem for hours without needing to shift to something else" },
+    { th:"focus", t:"pair", a:"I would rather do one thing with excellence than spread myself across many things adequately", b:"I would rather make progress on many fronts simultaneously than wait to perfect a single one" },
+    // FUTURISTIC (5)
+    { th:"futuristic", t:"pair", a:"I regularly imagine vivid scenarios of what the future could look like and am energised by these visions", b:"I focus my mental energy on the present reality and what needs to be done today" },
+    { th:"futuristic", t:"scale", stmt:"Conversations about long-term possibilities — 10 or 20 years out — energise me more than near-term tactical planning" },
+    { th:"futuristic", t:"pair", a:"I am naturally good at describing a compelling future state that gets others excited about a shared vision", b:"I am naturally good at translating high-level aspirations into actionable steps that teams can execute now" },
+    { th:"futuristic", t:"scale", stmt:"I often find myself frustrated that current institutions and structures don't reflect what is possible" },
+    { th:"futuristic", t:"pair", a:"I think most naturally in terms of where things are going, not where they came from or where they are now", b:"I think most naturally in terms of where things are now and what needs to be changed immediately" },
+    // HARMONY (5)
+    { th:"harmony", t:"pair", a:"When two people are in conflict, I naturally look for the common ground that could resolve it", b:"When two people are in conflict, I naturally help them articulate their positions more clearly so the right answer emerges" },
+    { th:"harmony", t:"scale", stmt:"I am uncomfortable with unnecessary conflict and naturally work to reduce frictio
